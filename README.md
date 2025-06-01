@@ -30,7 +30,7 @@ Para aplicarmos os conceitos aprendidos na disciplina, será desenvolvido um sis
 
 <h3>👨‍🏫 Professor</h3>
 Nome do Professor: ADLER DINIZ DE SOUZA <br>
-Disciplina: Engenharia de Software I <br>
+Disciplina: Engenharia de Software I (XDES04) <br>
 Instituição: UNIFEI (Universidade Federal de Itajubá) <br>
 Semestre:  2025/1
 
