@@ -34,8 +34,8 @@ Disciplina: Engenharia de Software I <br>
 Instituição: UNIFEI (Universidade Federal de Itajubá) <br>
 Semestre:  2025/1
 
-
-
+<h3>Observação</h3>
+Este projeto é de uso estritamente acadêmico.
 
 
 
