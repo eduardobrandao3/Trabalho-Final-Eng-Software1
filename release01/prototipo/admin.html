@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel do Administrador – Uber</title>
+
+    <!-- Estilos e ícones -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="logo text-decoration-none text-white"
+          >UBER</a
+        >
+        <button
+          class="btn btn-danger"
+          onclick="window.location.href='index.html'"
+        >
+          Sair
+        </button>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <section class="section-card">
+        <h2 class="card-title">Painel do Administrador</h2>
+
+        <div class="row gy-4">
+          <div class="col-md-6">
+            <div class="card border-secondary">
+              <div class="card-body">
+                <h5 class="card-title">Passageiros Cadastrados</h5>
+                <div class="search-box mb-3">
+                  <input
+                    type="text"
+                    class="form-control search-cpf"
+                    placeholder="Buscar por CPF"
+                  />
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span>João Silva</span>
+                      <span class="badge bg-success">Ativo</span>
+                    </div>
+                    <div class="user-actions mt-2">
+                      <button
+                        class="btn btn-sm btn-info view-btn"
+                        data-user-type="passenger"
+                      >
+                        Ver dados
+                      </button>
+                      <button
+                        class="btn btn-sm btn-warning block-btn"
+                        data-user-type="passenger"
+                      >
+                        Bloquear
+                      </button>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span>Maria Oliveira</span>
+                      <span class="badge bg-danger">Inativo</span>
+                    </div>
+                    <div class="user-actions mt-2">
+                      <button
+                        class="btn btn-sm btn-info view-btn"
+                        data-user-type="passenger"
+                      >
+                        Ver dados
+                      </button>
+                      <button
+                        class="btn btn-sm btn-warning block-btn"
+                        data-user-type="passenger"
+                      >
+                        Bloquear
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card border-secondary">
+              <div class="card-body">
+                <h5 class="card-title">Motoristas Cadastrados</h5>
+                <div class="search-box mb-3">
+                  <input
+                    type="text"
+                    class="form-control search-cpf"
+                    placeholder="Buscar por CPF"
+                  />
+                </div>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span>Carlos Mendes</span>
+                      <span class="badge bg-warning text-dark">Pendente</span>
+                    </div>
+                    <div class="user-actions mt-2">
+                      <button
+                        class="btn btn-sm btn-info view-btn"
+                        data-user-type="driver"
+                      >
+                        Ver dados
+                      </button>
+                      <button
+                        class="btn btn-sm btn-success approve-btn"
+                        data-user-type="driver"
+                      >
+                        Aprovar
+                      </button>
+                      <button
+                        class="btn btn-sm btn-danger reject-btn"
+                        data-user-type="driver"
+                      >
+                        Recusar
+                      </button>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <div
+                      class="d-flex justify-content-between align-items-center"
+                    >
+                      <span>Ana Costa</span>
+                      <span class="badge bg-success">Aprovado</span>
+                    </div>
+                    <div class="user-actions mt-2">
+                      <button
+                        class="btn btn-sm btn-info view-btn"
+                        data-user-type="driver"
+                      >
+                        Ver dados
+                      </button>
+                      <button
+                        class="btn btn-sm btn-warning block-btn"
+                        data-user-type="driver"
+                      >
+                        Bloquear
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-primary add-user-btn mt-4"
+          onclick="window.location.href='register.html'"
+        >
+          <i class="fas fa-plus"></i> Cadastrar Novo Usuário
+        </button>
+      </section>
+    </main>
+
+    <!-- Modal para visualizar dados -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalhes do Usuário</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="userDetails">
+            <!-- Dados serão preenchidos via JS -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para ações (bloquear/recusar) -->
+    <div class="modal fade" id="actionModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="actionModalTitle">Ação</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="justification" class="form-label"
+                >Justificativa</label
+              >
+              <textarea
+                class="form-control"
+                id="justification"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-primary" id="confirmAction">
+              Confirmar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

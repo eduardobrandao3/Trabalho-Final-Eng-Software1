@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Uber – Sistema de Transporte</title>
+
+  <!-- CSS externos -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Seu tema -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container d-flex justify-content-between align-items-center">
+      <span class="logo">UBER</span>
+      <div>
+        <a href="login.html" class="btn btn-light me-2">Login</a>
+        <a href="register.html" class="btn btn-uber">Cadastrar</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Botão de tema -->
+  <button class="btn btn-uber theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <!-- Conteúdo principal -->
+  <main class="container mt-5">
+    <section class="text-center mb-5">
+      <h1>Sistema de Transporte de Passageiros</h1>
+      <p class="lead">Conectando passageiros e motoristas com segurança e eficiência</p>
+    </section>
+
+    <div class="row">
+      <div class="col-md-6">
+        <section class="section-card">
+          <h3 class="card-title">Para Passageiros</h3>
+          <p>Solicite corridas de forma rápida e segura, acompanhe seu motorista em tempo real e tenha diversas opções de pagamento.</p>
+          <div class="text-center mt-4">
+            <a href="register.html#passenger" class="btn btn-uber">
+              <i class="fas fa-user me-2"></i>Cadastrar como Passageiro
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <div class="col-md-6">
+        <section class="section-card">
+          <h3 class="card-title">Para Motoristas</h3>
+          <p>Ofereça corridas com flexibilidade de horário, tenha controle sobre seus ganhos e faça parte de uma comunidade global.</p>
+          <div class="text-center mt-4">
+            <a href="register.html#driver" class="btn btn-uber">
+              <i class="fas fa-car me-2"></i>Cadastrar como Motorista
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <section class="section-card mt-4">
+      <h3 class="card-title">Tipos de Serviço</h3>
+      <div class="row gy-4">
+        <!-- UberX -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">UberX</h5>
+              <p class="card-text">Viagens econômicas com conforto e qualidade.</p>
+              <ul>
+                <li>Veículo 4 portas</li>
+                <li>Até 4 passageiros</li>
+                <li>Preço acessível</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- UberBLACK -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">UberBLACK</h5>
+              <p class="card-text">Viagens executivas com motorista profissional.</p>
+              <ul>
+                <li>Carros de luxo</li>
+                <li>Motoristas selecionados</li>
+                <li>Experiência premium</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <!-- UberVAN -->
+        <div class="col-md-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">UberVAN</h5>
+              <p class="card-text">Ideal para grupos ou viagens com bagagem.</p>
+              <ul>
+                <li>Até 7 passageiros</li>
+                <li>Amplo espaço para bagagens</li>
+                <li>Conforto para viagens longas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- JS externos -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Seu script -->
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+:root {
+  --cor-principal: #000;
+  --cor-secundaria: #fff;
+  --cor-destaque: #28a745;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background-color: var(--cor-secundaria);
+  color: var(--cor-principal);
+  transition: all 0.3s ease-in-out;
+}
+
+.header {
+  background-color: var(--cor-principal);
+  color: var(--cor-secundaria);
+  padding: 15px 0;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--cor-secundaria);
+}
+
+.section-card {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.btn-uber {
+  background-color: var(--cor-principal);
+  color: var(--cor-secundaria);
+}
+
+.btn-uber:hover {
+  background-color: #222;
+}
+
+.user-role-selector {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  justify-content: center;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 20px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.role-btn.active {
+  border-color: var(--cor-destaque);
+  background-color: #e6ffe6;
+}
+
+.theme-dark {
+  background-color: #121212;
+  color: #eee;
+}
+
+.theme-dark .section-card {
+  background-color: #1e1e1e;
+  border-color: #333;
+}
+
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  border-radius: 50%;
+  padding: 10px 12px;
+  font-size: 18px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Estilos específicos para a página de perfil */
+#profileForm input:disabled,
+#profileForm select:disabled {
+  background-color: #f8f9fa;
+  color: #495057;
+  border-color: #dee2e6;
+}
+
+#profileForm .btn {
+  min-width: 150px;
+}
+
+#profileForm .btn i {
+  pointer-events: none;
+}
+
+.confirm-email {
+  transition: all 0.3s ease;
+}
+
+/* Melhorias para o tema escuro */
+.theme-dark #profileForm input:disabled,
+.theme-dark #profileForm select:disabled {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+/* Estilos específicos para a página de perfil do motorista */
+#profileForm input:disabled,
+#profileForm select:disabled {
+  background-color: #f8f9fa;
+  color: #495057;
+  border-color: #dee2e6;
+}
+
+#profileForm .btn {
+  min-width: 150px;
+}
+
+#profileForm .btn i {
+  pointer-events: none;
+}
+
+.confirm-email,
+#documentosSection {
+  transition: all 0.3s ease;
+}
+
+#profileImage {
+  object-fit: cover;
+  border: 3px solid #dee2e6;
+}
+
+/* Melhorias para o tema escuro */
+.theme-dark #profileForm input:disabled,
+.theme-dark #profileForm select:disabled {
+  background-color: #2d2d2d;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+.theme-dark #profileImage {
+  border-color: #444;
+}
+
+/* Estilos para o painel de admin */
+.search-box {
+  margin-bottom: 1rem;
+}
+
+.user-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.user-actions .btn {
+  font-size: 0.8rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.add-user-btn {
+  margin-top: 2rem;
+  display: block;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ajustes para os itens da lista */
+.list-group-item {
+  padding: 1rem;
+}

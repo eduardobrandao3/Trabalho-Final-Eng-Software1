@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Criar Conta – Uber</title>
+
+    <!-- Bibliotecas externas -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Tema -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="logo text-decoration-none text-white"
+          >UBER</a
+        >
+        <a href="login.html" class="btn btn-light">Login</a>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <section class="section-card">
+        <h2 class="card-title">Criar nova conta</h2>
+
+        <!-- Seletor de papel -->
+        <div class="user-role-selector">
+          <div
+            class="role-btn active"
+            id="passengerRole"
+            onclick="selectRole('passenger')"
+          >
+            <i class="fas fa-user"></i>
+            <h4>Passageiro</h4>
+            <p>Quero solicitar corridas</p>
+          </div>
+          <div class="role-btn" id="driverRole" onclick="selectRole('driver')">
+            <i class="fas fa-car"></i>
+            <h4>Motorista</h4>
+            <p>Quero oferecer corridas</p>
+          </div>
+        </div>
+
+        <!-- Formulário Passageiro -->
+        <div id="passengerForm">
+          <form id="passengerRegistrationForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nome Completo</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">CPF</label>
+                <input type="text" class="form-control cpf" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Telefone</label>
+                <input type="tel" class="form-control phone" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Sexo</label>
+                <select class="form-select" required>
+                  <option value="">Selecione</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Foto de Perfil (opcional)</label>
+                <input type="file" class="form-control" accept="image/*" />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">E-mail</label>
+              <input type="email" class="form-control" required />
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Senha</label>
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="togglePassword(this)"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small class="form-text text-muted"
+                  >Mínimo 8 caracteres, incluindo maiúsculas, minúsculas,
+                  números e símbolos</small
+                >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Confirmar Senha</label>
+                <input type="password" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="index.html" class="btn btn-secondary">Voltar</a>
+              <button type="submit" class="btn btn-uber">Criar Conta</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Formulário Motorista -->
+        <div id="driverForm" class="hidden">
+          <form id="driverRegistrationForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nome Completo</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">CPF</label>
+                <input type="text" class="form-control cpf" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Número da CNH</label>
+                <input type="text" class="form-control" required />
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Categoria da CNH</label>
+                <select class="form-select" required>
+                  <option value="">Selecione</option>
+                  <option>A</option>
+                  <option>B</option>
+                  <option>AB</option>
+                  <option>C</option>
+                  <option>D</option>
+                  <option>E</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Validade da CNH</label>
+                <input type="date" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Telefone</label>
+                <input type="tel" class="form-control phone" required />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">E-mail</label>
+                <input type="email" class="form-control" required />
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" required />
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label">Sexo</label>
+                <select class="form-select" required>
+                  <option value="">Selecione</option>
+                  <option value="masculino">Masculino</option>
+                  <option value="feminino">Feminino</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Senha</label>
+                <div class="input-group">
+                  <input
+                    type="password"
+                    class="form-control password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    onclick="togglePassword(this)"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </button>
+                </div>
+                <small class="form-text text-muted"
+                  >Mínimo 8 caracteres, incluindo maiúsculas, minúsculas,
+                  números e símbolos</small
+                >
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Confirmar Senha</label>
+                <input type="password" class="form-control" required />
+              </div>
+            </div>
+
+            <!-- Uploads -->
+            <div class="mb-3">
+              <label class="form-label">Enviar Documentos</label>
+              <div class="border p-3 rounded">
+                <div class="mb-3">
+                  <label class="form-label">Foto da CNH (Frente e Verso)</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept="image/*"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Comprovante de Residência</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept="image/*,application/pdf"
+                    required
+                  />
+                </div>
+                <div>
+                  <label class="form-label"
+                    >Atestado de Antecedentes Criminais</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    accept="image/*,application/pdf"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="index.html" class="btn btn-secondary">Voltar</a>
+              <button type="submit" class="btn btn-uber">
+                Enviar Cadastro
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bibliotecas JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script principal -->
+    <script src="script.js"></script>
+  </body>
+</html>
