@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastrar Veículo - Uber</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="logo text-decoration-none text-white"
+          >UBER</a
+        >
+        <button
+          class="btn btn-light"
+          onclick="window.location.href='vehicle_list.html'"
+        >
+          <i class="fas fa-arrow-left me-1"></i>Voltar
+        </button>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <section class="section-card">
+        <h2 class="card-title">Cadastrar Veículo</h2>
+        <form id="vehicleForm" class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Placa</label>
+            <input
+              type="text"
+              class="form-control"
+              id="plate"
+              name="plate"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Marca</label>
+            <input
+              type="text"
+              class="form-control"
+              id="brand"
+              name="brand"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Modelo</label>
+            <input
+              type="text"
+              class="form-control"
+              id="model"
+              name="model"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ano de Fabricação</label>
+            <input
+              type="number"
+              class="form-control"
+              id="yearFab"
+              name="yearFab"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ano do Modelo</label>
+            <input
+              type="number"
+              class="form-control"
+              id="yearModel"
+              name="yearModel"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Cor</label>
+            <input
+              type="text"
+              class="form-control"
+              id="color"
+              name="color"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">RENAVAM</label>
+            <input
+              type="text"
+              class="form-control"
+              id="renavam"
+              name="renavam"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Capacidade de Passageiros</label>
+            <input
+              type="number"
+              class="form-control"
+              id="capacity"
+              name="capacity"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Categoria</label>
+            <select class="form-select" id="category" name="category" required>
+              <option value="">Selecione</option>
+              <option value="Comum">Comum</option>
+              <option value="Executivo">Executivo</option>
+              <option value="Bagageiro">Bagageiro</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">CRLV (imagem)</label>
+            <input
+              type="file"
+              class="form-control"
+              id="crlv"
+              name="crlv"
+              accept="image/*"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Seguro Obrigatório</label>
+            <input
+              type="text"
+              class="form-control"
+              id="insurance"
+              name="insurance"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Seguro APP</label>
+            <input
+              type="text"
+              class="form-control"
+              id="app"
+              name="app"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-uber">
+              <i class="fas fa-save me-2"></i>Cadastrar Veículo
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Função para salvar veículo no localStorage
+        function saveVehicle(vehicleData) {
+          // Recupera veículos existentes ou inicia um array vazio
+          const vehicles = JSON.parse(localStorage.getItem("vehicles")) || [];
+
+          // Adiciona o novo veículo
+          vehicles.push(vehicleData);
+
+          // Salva no localStorage
+          localStorage.setItem("vehicles", JSON.stringify(vehicles));
+        }
+
+        // Evento de submit do formulário
+        $("#vehicleForm").on("submit", function (e) {
+          e.preventDefault();
+
+          // Coleta os dados do formulário
+          const vehicleData = {
+            id: Date.now(), // ID único baseado em timestamp
+            plate: $("#plate").val(),
+            brand: $("#brand").val(),
+            model: $("#model").val(),
+            yearFab: $("#yearFab").val(),
+            yearModel: $("#yearModel").val(),
+            color: $("#color").val(),
+            renavam: $("#renavam").val(),
+            capacity: $("#capacity").val(),
+            category: $("#category").val(),
+            insurance: $("#insurance").val(),
+            app: $("#app").val(),
+            status: "Pendente", // Alterado para 'Pendente' como status inicial
+          };
+
+          // Salva o veículo
+          saveVehicle(vehicleData);
+
+          // Exibe mensagem de sucesso
+          alert("Veículo cadastrado com sucesso! Status: Pendente");
+
+          // Redireciona para a lista de veículos após 1 segundo
+          setTimeout(() => {
+            window.location.href = "vehicle_list.html";
+          }, 1000);
+        });
+      });
+    </script>
+  </body>
+</html>

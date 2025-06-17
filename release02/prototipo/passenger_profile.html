@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil do Passageiro – Uber</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --cor-principal: #000;
+        --cor-secundaria: #fff;
+        --cor-destaque: #28a745;
+      }
+      
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f8f9fa;
+        color: #212529;
+      }
+      
+      .header {
+        background-color: var(--cor-principal);
+        color: var(--cor-secundaria);
+        padding: 15px 0;
+      }
+      
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--cor-secundaria);
+      }
+      
+      .section-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        padding: 30px;
+        border-radius: 8px;
+        margin-top: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      }
+      
+      .card-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        color: #333;
+        font-weight: 600;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #eee;
+      }
+      
+      .btn-uber {
+        background-color: var(--cor-principal);
+        color: var(--cor-secundaria);
+        border: none;
+        padding: 10px 20px;
+        font-weight: 600;
+        border-radius: 8px;
+        transition: all 0.3s;
+      }
+      
+      .btn-uber:hover {
+        background-color: #222;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+      
+      .profile-image-container {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 20px;
+      }
+      
+      .profile-image-container img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border: 4px solid #fff;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+      }
+      
+      .profile-image-container:hover img {
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      }
+      
+      .profile-image-edit {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        background: rgba(0,0,0,0.7);
+        color: white;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.3s;
+      }
+      
+      .profile-image-container:hover .profile-image-edit {
+        opacity: 1;
+      }
+      
+      .hidden {
+        display: none !important;
+      }
+      
+      .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 25px;
+      }
+      
+      .action-buttons .btn {
+        flex: 1;
+        min-width: 200px;
+      }
+      
+      .form-label strong {
+        color: #444;
+      }
+      
+      .modal-header {
+        background-color: var(--cor-principal);
+        color: white;
+      }
+      
+      /* Adicionar estilo para a mensagem de sucesso */
+      .success-card {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="logo text-decoration-none">UBER</a>
+        <button
+          class="btn btn-danger"
+          onclick="window.location.href='index.html'"
+        >
+          Sair
+        </button>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <section class="section-card">
+        <h2 class="card-title">Bem-vindo, Passageiro</h2>
+
+        <form id="profileForm">
+          <!-- Foto de perfil -->
+          <div class="mb-4 text-center">
+            <div class="profile-image-container">
+              <img
+                src="https://via.placeholder.com/150?text=Sem+Imagem"
+                id="profileImage"
+                class="rounded-circle"
+                alt="Foto de perfil"
+              />
+              <div class="profile-image-edit" id="editProfileImageBtn">
+                <i class="fas fa-camera"></i>
+              </div>
+            </div>
+            <div id="profileImageUpload" class="hidden mt-3">
+              <input
+                type="file"
+                class="form-control"
+                id="profileImageInput"
+                accept="image/*"
+              />
+              <small class="text-muted">Formatos aceitos: JPG, PNG (máx. 2MB)</small>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><strong>Nome:</strong></label>
+              <input
+                type="text"
+                class="form-control"
+                id="nome"
+                value="João Silva"
+                disabled
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><strong>CPF:</strong></label>
+              <input
+                type="text"
+                class="form-control cpf"
+                value="123.456.789-00"
+                disabled
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label"
+                ><strong>Data de Nascimento:</strong></label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="dataNascimento"
+                value="1990-01-01"
+                disabled
+              />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label"><strong>Sexo:</strong></label>
+              <select class="form-select" id="sexo" disabled>
+                <option value="masculino" selected>Masculino</option>
+                <option value="feminino">Feminino</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"><strong>E-mail:</strong></label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              value="joao@email.com"
+              disabled
+            />
+          </div>
+
+          <div class="mb-3 confirm-email hidden">
+            <label class="form-label"
+              ><strong>Confirme o novo E-mail:</strong></label
+            >
+            <input type="email" class="form-control" id="confirmEmail" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"><strong>Telefone:</strong></label>
+            <input
+              type="text"
+              class="form-control phone"
+              id="telefone"
+              value="(11) 91234-5678"
+              disabled
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label"><strong>Situação:</strong></label>
+            <input
+              type="text"
+              class="form-control"
+              id="situacao"
+              value="Ativo"
+              disabled
+            />
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" id="editarBtn" class="btn btn-secondary">
+              <i class="fas fa-edit me-2"></i>Alterar Dados
+            </button>
+            <button type="submit" id="salvarBtn" class="btn btn-success hidden">
+              <i class="fas fa-save me-2"></i>Salvar
+            </button>
+            <button
+              type="button"
+              id="cancelarBtn"
+              class="btn btn-warning hidden"
+            >
+              <i class="fas fa-times me-2"></i>Cancelar
+            </button>
+            <button type="button" id="desativarBtn" class="btn btn-danger">
+              <i class="fas fa-user-slash me-2"></i>Desativar Conta
+            </button>
+            
+            <!-- Botão Formas de Pagamento modificado para ter o mesmo estilo -->
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='payment_methods.html'">
+              <i class="fas fa-credit-card me-2"></i>Formas de Pagamento
+            </button>
+          </div>
+        </form>
+      </section>
+      
+      <!-- Nova seção para mensagem de sucesso após desativação -->
+      <section id="successMessage" class="section-card success-card hidden">
+        <div class="text-center">
+          <i class="fas fa-check-circle fa-3x mb-3 text-success"></i>
+          <h2 class="card-title">Conta Desativada</h2>
+          <p class="fs-5">Sua conta foi desativada com sucesso.</p>
+          <button onclick="window.location.href='index.html'" class="btn btn-uber">
+            Voltar à Página Inicial
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="confirmModal"
+      tabindex="-1"
+      aria-labelledby="confirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmModalLabel">
+              Confirmar Desativação
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Fechar"
+            ></button>
+          </div>
+          <div class="modal-body">Você realmente deseja desativar a conta?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Não
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmarDesativar"
+            >
+              Sim
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Máscaras de CPF e Telefone usando jQuery Mask
+      $(function () {
+        $(".cpf").mask("000.000.000-00", { reverse: true });
+        $(".phone").mask("(00) 00000-0000");
+      });
+
+      // Função para salvar a foto de perfil no localStorage
+      function saveProfilePhoto(photoData) {
+        localStorage.setItem('passengerProfilePhoto', photoData);
+      }
+
+      // Função para carregar a foto de perfil do localStorage
+      function loadProfilePhoto() {
+        const savedPhoto = localStorage.getItem('passengerProfilePhoto');
+        if (savedPhoto) {
+          document.getElementById('profileImage').src = savedPhoto;
+        }
+      }
+
+      // Carregar a foto de perfil ao iniciar a página
+      document.addEventListener('DOMContentLoaded', function() {
+        loadProfilePhoto();
+        
+        // Verifica se estamos na página de perfil do passageiro
+        if (document.getElementById("profileForm")) {
+          const editarBtn = document.getElementById("editarBtn");
+          const salvarBtn = document.getElementById("salvarBtn");
+          const cancelarBtn = document.getElementById("cancelarBtn");
+          const desativarBtn = document.getElementById("desativarBtn");
+          const confirmarDesativar = document.getElementById("confirmarDesativar");
+          const confirmModal = new bootstrap.Modal(
+            document.getElementById("confirmModal")
+          );
+          const emailInput = document.getElementById("email");
+          const confirmEmailDiv = document.querySelector(".confirm-email");
+          const profileImageUpload = document.getElementById("profileImageUpload");
+          const profileImageInput = document.getElementById("profileImageInput");
+          const profileImage = document.getElementById("profileImage");
+          const editProfileImageBtn = document.getElementById("editProfileImageBtn");
+
+          // Armazena os valores originais para possível cancelamento
+          let originalValues = {};
+
+          // Botão para editar a foto de perfil
+          editProfileImageBtn.addEventListener("click", function() {
+            profileImageUpload.classList.toggle("hidden");
+          });
+
+          // Visualização da imagem de perfil antes do upload
+          profileImageInput.addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                profileImage.src = event.target.result;
+                // Salva a nova foto no localStorage
+                saveProfilePhoto(event.target.result);
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+
+          // Botão Editar
+          editarBtn.addEventListener("click", function () {
+            // Salva os valores atuais
+            originalValues = {
+              nome: document.getElementById("nome").value,
+              dataNascimento: document.getElementById("dataNascimento").value,
+              telefone: document.getElementById("telefone").value,
+              email: emailInput.value
+            };
+
+            // Habilita edição dos campos permitidos
+            document.getElementById("nome").disabled = false;
+            document.getElementById("dataNascimento").disabled = false;
+            document.getElementById("telefone").disabled = false;
+            emailInput.disabled = false;
+            profileImageUpload.classList.remove("hidden");
+
+            // Mostra/Esconde botões
+            editarBtn.classList.add("hidden");
+            salvarBtn.classList.remove("hidden");
+            cancelarBtn.classList.remove("hidden");
+          });
+
+          // Botão Cancelar
+          cancelarBtn.addEventListener("click", function () {
+            // Restaura os valores originais
+            document.getElementById("nome").value = originalValues.nome;
+            document.getElementById("dataNascimento").value = originalValues.dataNascimento;
+            document.getElementById("telefone").value = originalValues.telefone;
+            emailInput.value = originalValues.email;
+            
+            // Restaura a foto de perfil original
+            loadProfilePhoto();
+
+            // Desabilita os campos
+            document.getElementById("nome").disabled = true;
+            document.getElementById("dataNascimento").disabled = true;
+            document.getElementById("telefone").disabled = true;
+            emailInput.disabled = true;
+            profileImageUpload.classList.add("hidden");
+
+            // Esconde confirmação de email se estiver visível
+            confirmEmailDiv.classList.add("hidden");
+            document.getElementById("confirmEmail").value = "";
+
+            // Mostra/Esconde botões
+            editarBtn.classList.remove("hidden");
+            salvarBtn.classList.add("hidden");
+            cancelarBtn.classList.add("hidden");
+          });
+
+          // Botão Desativar
+          desativarBtn.addEventListener("click", function () {
+            confirmModal.show();
+          });
+
+          // Confirmação de desativação
+          confirmarDesativar.addEventListener("click", function () {
+            // Esconde o formulário de perfil
+            document.querySelector('.section-card').classList.add('hidden');
+            
+            // Mostra a mensagem de sucesso
+            document.getElementById('successMessage').classList.remove('hidden');
+            
+            // Fecha o modal
+            confirmModal.hide();
+
+            // Limpa dados locais (simulação)
+            localStorage.removeItem('passengerProfilePhoto');
+          });
+
+          // Fechar modal quando clicar em NÃO
+          document.querySelector('#confirmModal .btn-secondary').addEventListener('click', function() {
+            confirmModal.hide();
+          });
+
+          // Verifica mudança no email para pedir confirmação
+          emailInput.addEventListener("change", function () {
+            if (emailInput.value !== originalValues.email) {
+              confirmEmailDiv.classList.remove("hidden");
+            } else {
+              confirmEmailDiv.classList.add("hidden");
+            }
+          });
+
+          // Validação do formulário
+          document
+            .getElementById("profileForm")
+            .addEventListener("submit", function (e) {
+              e.preventDefault();
+
+              // Verifica se email foi alterado e se a confirmação bate
+              if (emailInput.value !== originalValues.email) {
+                const confirmEmail = document.getElementById("confirmEmail").value;
+                if (emailInput.value !== confirmEmail) {
+                  alert("Os emails não coincidem!");
+                  return;
+                }
+              }
+
+              // Aqui você pode adicionar código para salvar os dados no servidor
+
+              // Desabilita os campos após salvar
+              document.getElementById("nome").disabled = true;
+              document.getElementById("dataNascimento").disabled = true;
+              document.getElementById("telefone").disabled = true;
+              emailInput.disabled = true;
+              confirmEmailDiv.classList.add("hidden");
+              profileImageUpload.classList.add("hidden");
+
+              // Mostra/Esconde botões
+              editarBtn.classList.remove("hidden");
+              salvarBtn.classList.add("hidden");
+              cancelarBtn.classList.add("hidden");
+
+              alert("Dados atualizados com sucesso!");
+            });
+        }
+      });
+    </script>
+  </body>
+</html>

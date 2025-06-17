@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perfil do Motorista – Uber</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+  <style>
+    :root {
+      --cor-principal: #000;
+      --cor-secundaria: #fff;
+      --cor-destaque: #28a745;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+    
+    .header {
+      background-color: var(--cor-principal);
+      color: var(--cor-secundaria);
+      padding: 15px 0;
+    }
+    
+    .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--cor-secundaria);
+    }
+    
+    .section-card {
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 30px;
+      border-radius: 8px;
+      margin-top: 25px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    
+    .card-title {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #333;
+      font-weight: 600;
+      padding-bottom: 15px;
+      border-bottom: 2px solid #eee;
+    }
+    
+    .btn-uber {
+      background-color: var(--cor-principal);
+      color: var(--cor-secundaria);
+      border: none;
+      padding: 10px 20px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s;
+    }
+    
+    .btn-uber:hover {
+      background-color: #222;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .profile-image-container {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    
+    .profile-image-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border: 4px solid #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    
+    .profile-image-container:hover img {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+    
+    .profile-image-edit {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: all 0.3s;
+    }
+    
+    .profile-image-container:hover .profile-image-edit {
+      opacity: 1;
+    }
+    
+    .hidden {
+      display: none !important;
+    }
+    
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+    
+    .action-buttons .btn {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .form-label strong {
+      color: #444;
+    }
+    
+    .modal-header {
+      background-color: var(--cor-principal);
+      color: white;
+    }
+
+    /* Adicionar estilo para a mensagem de sucesso */
+    .success-card {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a href="index.html" class="logo text-decoration-none">UBER</a>
+      <button
+        class="btn btn-danger"
+        onclick="window.location.href='index.html'"
+      >
+        <i class="fas fa-sign-out-alt me-1"></i>Sair
+      </button>
+    </div>
+  </header>
+
+  <main class="container my-5">
+    <section class="section-card">
+      <h2 class="card-title">Bem-vindo, Motorista</h2>
+
+      <form id="profileForm">
+        <!-- Foto de perfil -->
+        <div class="mb-4 text-center">
+          <div class="profile-image-container">
+            <img
+              src="https://via.placeholder.com/150?text=Sem+Imagem"
+              id="profileImage"
+              class="rounded-circle"
+              alt="Foto de perfil"
+            />
+            <div class="profile-image-edit" id="editProfileImageBtn">
+              <i class="fas fa-camera"></i>
+            </div>
+          </div>
+          <div id="profileImageUpload" class="hidden mt-3">
+            <input
+              type="file"
+              class="form-control"
+              id="profileImageInput"
+              accept="image/*"
+            />
+            <small class="text-muted">Formatos aceitos: JPG, PNG (máx. 2MB)</small>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>Nome:</strong></label>
+            <input
+              type="text"
+              class="form-control"
+              id="nome"
+              value="Carlos Mendes"
+              disabled
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>CPF:</strong></label>
+            <input
+              type="text"
+              class="form-control cpf"
+              id="cpf"
+              value="987.654.321-00"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label"
+              ><strong>Data de Nascimento:</strong></label
+            >
+            <input
+              type="date"
+              class="form-control"
+              id="dataNascimento"
+              value="1985-05-15"
+              disabled
+            />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label"><strong>Sexo:</strong></label>
+            <select class="form-select" id="sexo" disabled>
+              <option value="masculino" selected>Masculino</option>
+              <option value="feminino">Feminino</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label"><strong>Situação:</strong></label>
+            <input
+              type="text"
+              class="form-control"
+              id="situacao"
+              value="Ativo"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>Número da CNH:</strong></label>
+            <input
+              type="text"
+              class="form-control"
+              id="cnh"
+              value="12345678900"
+              disabled
+            />
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label"><strong>Categoria CNH:</strong></label>
+            <select class="form-select" id="categoriaCnh" disabled>
+              <option value="B" selected>B</option>
+              <option value="A">A</option>
+              <option value="AB">AB</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+          </div>
+          <div class="col-md-3 mb-3">
+            <label class="form-label"><strong>Validade CNH:</strong></label>
+            <input
+              type="date"
+              class="form-control"
+              id="validadeCnh"
+              value="2027-10-31"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>E-mail:</strong></label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              value="carlos@email.com"
+              disabled
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label"><strong>Telefone:</strong></label>
+            <input
+              type="text"
+              class="form-control phone"
+              id="telefone"
+              value="(11) 98765-4321"
+              disabled
+            />
+          </div>
+        </div>
+
+        <div class="mb-3 confirm-email hidden">
+          <label class="form-label"
+            ><strong>Confirme o novo E-mail:</strong></label
+          >
+          <input type="email" class="form-control" id="confirmEmail" />
+        </div>
+
+        <!-- Seção de documentos (visível apenas durante edição) -->
+        <div id="documentosSection" class="mb-4 hidden">
+          <h5 class="mb-3">Documentos para Atualização</h5>
+          <div class="border p-3 rounded">
+            <div class="mb-3">
+              <label class="form-label"
+                >Nova Foto da CNH (Frente e Verso)</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="cnhFoto"
+                accept="image/*"
+              />
+              <small class="text-muted"
+                >Obrigatório se alterar validade ou categoria da CNH</small
+              >
+            </div>
+            <div class="mb-3">
+              <label class="form-label"
+                >Comprovante de Residência Atualizado</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="comprovanteResidencia"
+                accept="image/*,application/pdf"
+              />
+            </div>
+            <div>
+              <label class="form-label"
+                >Atestado de Antecedentes Criminais Atualizado</label
+              >
+              <input
+                type="file"
+                class="form-control"
+                id="atestadoAntecedentes"
+                accept="image/*,application/pdf"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button type="button" id="editarBtn" class="btn btn-secondary">
+            <i class="fas fa-edit me-2"></i>Alterar Dados
+          </button>
+          <button type="submit" id="salvarBtn" class="btn btn-success hidden">
+            <i class="fas fa-save me-2"></i>Salvar
+          </button>
+          <button
+            type="button"
+            id="cancelarBtn"
+            class="btn btn-warning hidden"
+          >
+            <i class="fas fa-times me-2"></i>Cancelar
+          </button>
+
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='vehicle_register.html'">
+            <i class="fas fa-car me-2"></i>Cadastrar Veículo
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="window.location.href='vehicle_list.html'">
+            <i class="fas fa-list me-2"></i>Ver Meus Veículos
+          </button>
+
+          <button type="button" id="desativarBtn" class="btn btn-danger">
+            <i class="fas fa-user-slash me-2"></i>Desativar Conta
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Nova seção para mensagem de sucesso após desativação -->
+    <section id="successMessage" class="section-card success-card hidden">
+      <div class="text-center">
+        <i class="fas fa-check-circle fa-3x mb-3 text-success"></i>
+        <h2 class="card-title">Conta Desativada</h2>
+        <p class="fs-5">Sua conta foi desativada com sucesso.</p>
+        <button onclick="window.location.href='index.html'" class="btn btn-uber">
+          Voltar à Página Inicial
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de confirmação de desativação -->
+  <div
+    class="modal fade"
+    id="confirmModal"
+    tabindex="-1"
+    aria-labelledby="confirmModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmModalLabel">
+            Confirmar Desativação
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fechar"
+          ></button>
+        </div>
+        <div class="modal-body">Você realmente deseja desativar a conta?</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Não
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="confirmarDesativar"
+          >
+            Sim
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmação de envio de documentos -->
+  <div
+    class="modal fade"
+    id="docsModal"
+    tabindex="-1"
+    aria-labelledby="docsModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="docsModalLabel">Documentos Enviados</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Fechar"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Seus documentos foram enviados para análise. Sua situação foi
+            alterada para <strong>Pendente</strong>.
+          </p>
+          <p>
+            Você será notificado por e-mail assim que sua conta for aprovada.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+          >
+            Entendido
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Máscaras de CPF e Telefone usando jQuery Mask
+    $(function () {
+      $(".cpf").mask("000.000.000-00", { reverse: true });
+      $(".phone").mask("(00) 00000-0000");
+    });
+
+    // Função para salvar a foto de perfil no localStorage
+    function saveProfilePhoto(photoData) {
+      localStorage.setItem('driverProfilePhoto', photoData);
+    }
+
+    // Função para carregar a foto de perfil do localStorage
+    function loadProfilePhoto() {
+      const savedPhoto = localStorage.getItem('driverProfilePhoto');
+      if (savedPhoto) {
+        document.getElementById('profileImage').src = savedPhoto;
+      }
+    }
+
+    // Carregar a foto de perfil ao iniciar a página
+    document.addEventListener('DOMContentLoaded', function() {
+      loadProfilePhoto();
+      
+      // Restante do código...
+    });
+
+    // Alternar visibilidade da senha
+    function togglePassword(button) {
+      const input = button.closest(".input-group").querySelector(".password");
+      const icon = button.querySelector("i");
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.replace("fa-eye", "fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.replace("fa-eye-slash", "fa-eye");
+      }
+    }
+
+    // Alternar tema claro/escuro
+    const themeBtn = document.getElementById("themeToggle");
+    if (themeBtn) {
+      themeBtn.addEventListener("click", () => {
+        document.body.classList.toggle("theme-dark");
+        const icon = themeBtn.querySelector("i");
+        icon.classList.toggle("fa-moon");
+        icon.classList.toggle("fa-sun");
+      });
+    }
+
+    // Selecionar tipo de cadastro (passageiro ou motorista)
+    function selectRole(role) {
+      const passengerBtn = document.getElementById("passengerRole");
+      const driverBtn = document.getElementById("driverRole");
+      const passengerForm = document.getElementById("passengerForm");
+      const driverForm = document.getElementById("driverForm");
+
+      if (!passengerBtn || !driverBtn || !passengerForm || !driverForm) return;
+
+      passengerBtn.classList.toggle("active", role === "passenger");
+      driverBtn.classList.toggle("active", role === "driver");
+
+      passengerForm.classList.toggle("hidden", role !== "passenger");
+      driverForm.classList.toggle("hidden", role !== "driver");
+    }
+
+    // Redirecionamento de login simulado
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const accountType = document.getElementById("accountType").value;
+
+        if (accountType === "passenger") {
+          window.location.href = "passenger_profile.html";
+        } else if (accountType === "driver") {
+          window.location.href = "driver_profile.html";
+        } else if (accountType === "admin") {
+          window.location.href = "admin.html";
+        }
+      });
+    }
+
+    // Redirecionamento dos botões da tela de seleção de login
+    const loginPassengerBtn = document.getElementById("loginPassengerBtn");
+    if (loginPassengerBtn) {
+      loginPassengerBtn.addEventListener("click", () => {
+        window.location.href = "login.html?type=passenger";
+      });
+    }
+
+    const loginDriverBtn = document.getElementById("loginDriverBtn");
+    if (loginDriverBtn) {
+      loginDriverBtn.addEventListener("click", () => {
+        window.location.href = "login.html?type=driver";
+      });
+    }
+
+    const loginAdminBtn = document.getElementById("loginAdminBtn");
+    if (loginAdminBtn) {
+      loginAdminBtn.addEventListener("click", () => {
+        window.location.href = "login.html?type=admin";
+      });
+    }
+
+    // Redirecionamento da tela de perfil do passageiro/motorista
+    const backToLoginBtn = document.getElementById("backToLogin");
+    if (backToLoginBtn) {
+      backToLoginBtn.addEventListener("click", () => {
+        window.location.href = "index.html";
+      });
+    }
+
+    // Funções específicas para driver_profile.html
+    document.addEventListener("DOMContentLoaded", function () {
+      // Verifica se estamos na página de perfil do motorista
+      if (document.getElementById("profileForm") && document.getElementById("cnh")) {
+        const editarBtn = document.getElementById("editarBtn");
+        const salvarBtn = document.getElementById("salvarBtn");
+        const cancelarBtn = document.getElementById("cancelarBtn");
+        const desativarBtn = document.getElementById("desativarBtn");
+        const confirmarDesativar = document.getElementById("confirmarDesativar");
+        const confirmModal = new bootstrap.Modal(
+          document.getElementById("confirmModal")
+        );
+        const docsModal = new bootstrap.Modal(document.getElementById("docsModal"));
+        const emailInput = document.getElementById("email");
+        const confirmEmailDiv = document.querySelector(".confirm-email");
+        const documentosSection = document.getElementById("documentosSection");
+        const profileImageUpload = document.getElementById("profileImageUpload");
+        const profileImageInput = document.getElementById("profileImageInput");
+        const profileImage = document.getElementById("profileImage");
+        const validadeCnhInput = document.getElementById("validadeCnh");
+        const categoriaCnhSelect = document.getElementById("categoriaCnh");
+        const cnhFotoInput = document.getElementById("cnhFoto");
+        const editProfileImageBtn = document.getElementById("editProfileImageBtn");
+
+        // Máscaras para campos
+        $(".cpf").mask("000.000.000-00", { reverse: true });
+        $(".phone").mask("(00) 00000-0000");
+
+        // Armazena os valores originais para possível cancelamento
+        let originalValues = {};
+        let precisaEnviarDocs = false;
+
+        // Botão para editar a foto de perfil
+        editProfileImageBtn.addEventListener("click", function() {
+          profileImageUpload.classList.toggle("hidden");
+        });
+
+        // Visualização da imagem de perfil antes do upload
+        profileImageInput.addEventListener("change", function (e) {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = function (event) {
+              profileImage.src = event.target.result;
+              // Salva a nova foto no localStorage
+              saveProfilePhoto(event.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Botão Editar
+        editarBtn.addEventListener("click", function () {
+          // Salva os valores atuais
+          originalValues = {
+            nome: document.getElementById("nome").value,
+            dataNascimento: document.getElementById("dataNascimento").value,
+            telefone: document.getElementById("telefone").value,
+            email: emailInput.value,
+            validadeCnh: validadeCnhInput.value,
+            categoriaCnh: categoriaCnhSelect.value,
+          };
+
+          // Habilita edição dos campos permitidos
+          document.getElementById("nome").disabled = false;
+          document.getElementById("dataNascimento").disabled = false;
+          document.getElementById("telefone").disabled = false;
+          emailInput.disabled = false;
+          validadeCnhInput.disabled = false;
+          categoriaCnhSelect.disabled = false;
+          profileImageUpload.classList.remove("hidden");
+
+          // Mostra/Esconde botões e seções
+          editarBtn.classList.add("hidden");
+          salvarBtn.classList.remove("hidden");
+          cancelarBtn.classList.remove("hidden");
+          documentosSection.classList.remove("hidden");
+        });
+
+        // Botão Cancelar
+        cancelarBtn.addEventListener("click", function () {
+          // Restaura os valores originais
+          document.getElementById("nome").value = originalValues.nome;
+          document.getElementById("dataNascimento").value =
+            originalValues.dataNascimento;
+          document.getElementById("telefone").value = originalValues.telefone;
+          emailInput.value = originalValues.email;
+          validadeCnhInput.value = originalValues.validadeCnh;
+          categoriaCnhSelect.value = originalValues.categoriaCnh;
+          
+          // Restaura a foto de perfil original
+          loadProfilePhoto();
+
+          // Desabilita os campos
+          document.getElementById("nome").disabled = true;
+          document.getElementById("dataNascimento").disabled = true;
+          document.getElementById("telefone").disabled = true;
+          emailInput.disabled = true;
+          validadeCnhInput.disabled = true;
+          categoriaCnhSelect.disabled = true;
+          profileImageUpload.classList.add("hidden");
+
+          // Esconde confirmação de email se estiver visível
+          confirmEmailDiv.classList.add("hidden");
+          document.getElementById("confirmEmail").value = "";
+          documentosSection.classList.add("hidden");
+
+          // Mostra/Esconde botões
+          editarBtn.classList.remove("hidden");
+          salvarBtn.classList.add("hidden");
+          cancelarBtn.classList.add("hidden");
+        });
+
+        // Botão Desativar
+        desativarBtn.addEventListener("click", function () {
+          confirmModal.show();
+        });
+
+        // Confirmação de desativação
+        confirmarDesativar.addEventListener("click", function () {
+          // Esconde o formulário de perfil
+          document.querySelector('.section-card').classList.add('hidden');
+          
+          // Mostra a mensagem de sucesso
+          document.getElementById('successMessage').classList.remove('hidden');
+          
+          // Fecha o modal
+          confirmModal.hide();
+
+          // Limpa dados locais (simulação)
+          localStorage.removeItem('driverProfilePhoto');
+        });
+
+        // Fechar modal quando clicar em NÃO (CORREÇÃO ADICIONADA)
+        document.querySelector('#confirmModal .btn-secondary').addEventListener('click', function() {
+          confirmModal.hide(); // Fecha o modal corretamente
+        });
+
+        // Verifica mudança no email para pedir confirmação
+        emailInput.addEventListener("change", function () {
+          if (emailInput.value !== originalValues.email) {
+            confirmEmailDiv.classList.remove("hidden");
+          } else {
+            confirmEmailDiv.classList.add("hidden");
+          }
+        });
+
+        // Verifica mudanças na CNH para exigir envio de documentos
+        validadeCnhInput.addEventListener("change", checkCnhChanges);
+        categoriaCnhSelect.addEventListener("change", checkCnhChanges);
+
+        function checkCnhChanges() {
+          precisaEnviarDocs =
+            validadeCnhInput.value !== originalValues.validadeCnh ||
+            categoriaCnhSelect.value !== originalValues.categoriaCnh;
+
+          if (precisaEnviarDocs) {
+            cnhFotoInput.required = true;
+          } else {
+            cnhFotoInput.required = false;
+          }
+        }
+
+        // Validação do formulário
+        document
+          .getElementById("profileForm")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            // Verifica se email foi alterado e se a confirmação bate
+            if (emailInput.value !== originalValues.email) {
+              const confirmEmail = document.getElementById("confirmEmail").value;
+              if (emailInput.value !== confirmEmail) {
+                alert("Os emails não coincidem!");
+                return;
+              }
+            }
+
+            // Verifica se CNH foi alterada e se documentos foram enviados
+            if (precisaEnviarDocs && !cnhFotoInput.files.length) {
+              alert(
+                "Você deve enviar uma nova foto da CNH para alterar validade ou categoria!"
+              );
+              return;
+            }
+
+            // Aqui você pode adicionar código para salvar os dados no servidor
+
+            // Se houve alteração na CNH ou documentos foram enviados
+            if (
+              precisaEnviarDocs ||
+              cnhFotoInput.files.length ||
+              document.getElementById("comprovanteResidencia").files.length ||
+              document.getElementById("atestadoAntecedentes").files.length
+            ) {
+              document.getElementById("situacao").value = "Pendente";
+              docsModal.show();
+            }
+
+            // Desabilita os campos após salvar
+            document.getElementById("nome").disabled = true;
+            document.getElementById("dataNascimento").disabled = true;
+            document.getElementById("telefone").disabled = true;
+            emailInput.disabled = true;
+            validadeCnhInput.disabled = true;
+            categoriaCnhSelect.disabled = true;
+            confirmEmailDiv.classList.add("hidden");
+            profileImageUpload.classList.add("hidden");
+            documentosSection.classList.add("hidden");
+
+            // Mostra/Esconde botões
+            editarBtn.classList.remove("hidden");
+            salvarBtn.classList.add("hidden");
+            cancelarBtn.classList.add("hidden");
+          });
+      }
+    });
+  </script>
+</body>
+</html>

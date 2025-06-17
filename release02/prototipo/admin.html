@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Painel do Administrador – Uber</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .badge-pending {
+        background-color: #ffc107;
+        color: #000;
+      }
+      .badge-approved {
+        background-color: #28a745;
+      }
+      .badge-rejected {
+        background-color: #dc3545;
+      }
+      .badge-inactive {
+        background-color: #6c757d;
+      }
+      .vehicle-details {
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        padding: 10px;
+        margin-top: 10px;
+      }
+      .search-vehicles {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container d-flex justify-content-between align-items-center">
+        <a href="index.html" class="logo text-decoration-none text-white"
+          >UBER</a
+        >
+        <button
+          class="btn btn-danger"
+          onclick="window.location.href='index.html'"
+        >
+          Sair
+        </button>
+      </div>
+    </header>
+
+    <main class="container my-5">
+      <section class="section-card">
+        <h2 class="card-title">Painel do Administrador</h2>
+
+        <div class="row gy-4">
+          <div class="col-md-6">
+            <div class="card border-secondary">
+              <div class="card-body">
+                <h5 class="card-title">Passageiros Cadastrados</h5>
+                <div class="search-box mb-3">
+                  <input
+                    type="text"
+                    class="form-control search-cpf"
+                    placeholder="Buscar por CPF"
+                  />
+                </div>
+                <ul class="list-group" id="passengerList">
+                  <!-- Passageiros serão carregados dinamicamente -->
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card border-secondary">
+              <div class="card-body">
+                <h5 class="card-title">Motoristas Cadastrados</h5>
+                <div class="search-box mb-3">
+                  <input
+                    type="text"
+                    class="form-control search-cpf"
+                    placeholder="Buscar por CPF"
+                  />
+                </div>
+                <ul class="list-group" id="driverList">
+                  <!-- Motoristas serão carregados dinamicamente -->
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de busca de veículos -->
+        <div class="search-vehicles">
+          <h4><i class="fas fa-car me-2"></i>Consulta de Veículos</h4>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <input
+                type="text"
+                class="form-control"
+                id="searchPlate"
+                placeholder="Placa"
+              />
+            </div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                class="form-control"
+                id="searchRenavam"
+                placeholder="RENAVAM"
+              />
+            </div>
+            <div class="col-md-3">
+              <input
+                type="text"
+                class="form-control"
+                id="searchDriver"
+                placeholder="Motorista"
+              />
+            </div>
+            <div class="col-md-3">
+              <select class="form-select" id="searchStatus">
+                <option value="">Todos status</option>
+                <option value="Pendente">Pendente</option>
+                <option value="Aprovado">Aprovado</option>
+                <option value="Reprovado">Reprovado</option>
+                <option value="Inativo">Inativo</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <button class="btn btn-primary" id="searchVehiclesBtn">
+                <i class="fas fa-search me-2"></i>Buscar Veículos
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-striped" id="vehiclesTable">
+              <thead>
+                <tr>
+                  <th>Placa</th>
+                  <th>Modelo</th>
+                  <th>Motorista</th>
+                  <th>Situação</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="vehiclesTableBody">
+                <!-- Veículos serão carregados dinamicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal para visualizar dados do usuário -->
+    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Detalhes do Usuário</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="userDetails">
+            <!-- Dados serão preenchidos via JS -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para visualizar veículos do motorista -->
+    <div
+      class="modal fade"
+      id="viewVehiclesModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Veículos do Motorista</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="vehiclesDetails">
+            <!-- Veículos serão carregados dinamicamente -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para aprovar/reprovar veículo -->
+    <div
+      class="modal fade"
+      id="vehicleActionModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="vehicleActionTitle">Ação no Veículo</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="vehicleJustification" class="form-label"
+                >Justificativa</label
+              >
+              <textarea
+                class="form-control"
+                id="vehicleJustification"
+                rows="3"
+                required
+              ></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="confirmVehicleAction"
+            >
+              Confirmar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Dados de exemplo (substituir por dados reais do localStorage)
+      const users = {
+        passengers: [
+          { id: 1, name: "João Silva", cpf: "123.456.789-00", status: "Ativo" },
+          {
+            id: 2,
+            name: "Maria Oliveira",
+            cpf: "987.654.321-00",
+            status: "Inativo",
+          },
+        ],
+        drivers: [
+          {
+            id: 3,
+            name: "Carlos Mendes",
+            cpf: "456.789.123-00",
+            status: "Pendente",
+            vehicles: [
+              {
+                id: 1,
+                plate: "ABC1D23",
+                model: "Toyota Corolla",
+                status: "Pendente",
+              },
+              {
+                id: 2,
+                plate: "XYZ9W87",
+                model: "Honda Civic",
+                status: "Aprovado",
+              },
+            ],
+          },
+          {
+            id: 4,
+            name: "Ana Costa",
+            cpf: "321.654.987-00",
+            status: "Aprovado",
+            vehicles: [
+              {
+                id: 3,
+                plate: "DEF4G56",
+                model: "Volkswagen Golf",
+                status: "Aprovado",
+              },
+            ],
+          },
+        ],
+      };
+
+      // Variáveis globais
+      let currentAction = null;
+      let currentUserId = null;
+      let currentVehicleId = null;
+      const viewUserModal = new bootstrap.Modal("#viewUserModal");
+      const viewVehiclesModal = new bootstrap.Modal("#viewVehiclesModal");
+      const vehicleActionModal = new bootstrap.Modal("#vehicleActionModal");
+
+      // Funções auxiliares
+      function getStatusBadgeClass(status) {
+        switch (status) {
+          case "Pendente":
+            return "badge-pending";
+          case "Aprovado":
+            return "badge-approved";
+          case "Reprovado":
+            return "badge-rejected";
+          case "Inativo":
+            return "badge-inactive";
+          case "Ativo":
+            return "badge bg-success";
+          default:
+            return "badge-secondary";
+        }
+      }
+
+      function loadUsers() {
+        // Carrega passageiros
+        const passengerList = document.getElementById("passengerList");
+        passengerList.innerHTML = users.passengers
+          .map(
+            (passenger) => `
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>${passenger.name}</span>
+            <span class="badge ${
+              passenger.status === "Ativo" ? "bg-success" : "bg-danger"
+            }">${passenger.status}</span>
+          </div>
+          <div class="user-actions mt-2">
+            <button class="btn btn-sm btn-info view-btn" data-user-id="${
+              passenger.id
+            }" data-user-type="passenger">
+              Ver dados
+            </button>
+            <button class="btn btn-sm btn-warning block-btn" data-user-id="${
+              passenger.id
+            }" data-user-type="passenger">
+              ${passenger.status === "Ativo" ? "Bloquear" : "Desbloquear"}
+            </button>
+          </div>
+        </li>
+      `
+          )
+          .join("");
+
+        // Carrega motoristas
+        const driverList = document.getElementById("driverList");
+        driverList.innerHTML = users.drivers
+          .map(
+            (driver) => `
+        <li class="list-group-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <span>${driver.name}</span>
+            <span class="badge ${getStatusBadgeClass(driver.status)}">${
+              driver.status
+            }</span>
+          </div>
+          <div class="user-actions mt-2">
+            <button class="btn btn-sm btn-info view-btn" data-user-id="${
+              driver.id
+            }" data-user-type="driver">
+              Ver dados
+            </button>
+            <button class="btn btn-sm btn-success view-vehicles-btn" data-user-id="${
+              driver.id
+            }">
+              Ver Carros
+            </button>
+            ${
+              driver.status === "Pendente"
+                ? `
+              <button class="btn btn-sm btn-success approve-btn" data-user-id="${driver.id}">
+                Aprovar
+              </button>
+              <button class="btn btn-sm btn-danger reject-btn" data-user-id="${driver.id}">
+                Recusar
+              </button>
+            `
+                : `
+              <button class="btn btn-sm btn-warning block-btn" data-user-id="${
+                driver.id
+              }">
+                ${driver.status === "Aprovado" ? "Bloquear" : "Desbloquear"}
+              </button>
+            `
+            }
+          </div>
+        </li>
+      `
+          )
+          .join("");
+      }
+
+      function loadVehicles(searchParams = {}) {
+        // Simulação de busca - na implementação real, filtraria do localStorage
+        let vehicles = [];
+        users.drivers.forEach((driver) => {
+          driver.vehicles.forEach((vehicle) => {
+            vehicles.push({
+              ...vehicle,
+              driverName: driver.name,
+              driverId: driver.id,
+            });
+          });
+        });
+
+        // Aplicar filtros (simulação)
+        if (searchParams.plate) {
+          vehicles = vehicles.filter((v) =>
+            v.plate.includes(searchParams.plate)
+          );
+        }
+        if (searchParams.status) {
+          vehicles = vehicles.filter((v) => v.status === searchParams.status);
+        }
+
+        const tbody = document.getElementById("vehiclesTableBody");
+        tbody.innerHTML = vehicles
+          .map(
+            (vehicle) => `
+        <tr>
+          <td>${vehicle.plate}</td>
+          <td>${vehicle.model}</td>
+          <td>${vehicle.driverName}</td>
+          <td><span class="badge ${getStatusBadgeClass(vehicle.status)}">${
+              vehicle.status
+            }</span></td>
+          <td>
+            ${
+              vehicle.status === "Pendente"
+                ? `
+              <button class="btn btn-sm btn-success approve-vehicle-btn" data-vehicle-id="${vehicle.id}">
+                Aprovar
+              </button>
+              <button class="btn btn-sm btn-danger reject-vehicle-btn" data-vehicle-id="${vehicle.id}">
+                Reprovar
+              </button>
+            `
+                : ""
+            }
+            <button class="btn btn-sm btn-warning change-status-vehicle-btn" data-vehicle-id="${
+              vehicle.id
+            }">
+              ${vehicle.status === "Aprovado" ? "Inativar" : "Ativar"}
+            </button>
+          </td>
+        </tr>
+      `
+          )
+          .join("");
+      }
+
+      // Event listeners
+      $(document).ready(function () {
+        // Carrega dados iniciais
+        loadUsers();
+        loadVehicles();
+
+        // Visualizar dados do usuário
+        $(document).on("click", ".view-btn", function () {
+          const userId = $(this).data("user-id");
+          const userType = $(this).data("user-type");
+          const user =
+            userType === "passenger"
+              ? users.passengers.find((p) => p.id === userId)
+              : users.drivers.find((d) => d.id === userId);
+
+          $("#userDetails").html(`
+          <h6>${user.name}</h6>
+          <p><strong>CPF:</strong> ${user.cpf}</p>
+          <p><strong>Status:</strong> <span class="badge ${getStatusBadgeClass(
+            user.status
+          )}">${user.status}</span></p>
+          ${
+            userType === "driver"
+              ? `<p><strong>Veículos:</strong> ${user.vehicles.length}</p>`
+              : ""
+          }
+        `);
+
+          viewUserModal.show();
+        });
+
+        // Visualizar veículos do motorista
+        $(document).on("click", ".view-vehicles-btn", function () {
+          const userId = $(this).data("user-id");
+          const driver = users.drivers.find((d) => d.id === userId);
+
+          $("#vehiclesDetails").html(`
+          <h6>Veículos de ${driver.name}</h6>
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Placa</th>
+                  <th>Modelo</th>
+                  <th>Situação</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${driver.vehicles
+                  .map(
+                    (vehicle) => `
+                  <tr>
+                    <td>${vehicle.plate}</td>
+                    <td>${vehicle.model}</td>
+                    <td><span class="badge ${getStatusBadgeClass(
+                      vehicle.status
+                    )}">${vehicle.status}</span></td>
+                    <td>
+                      ${
+                        vehicle.status === "Pendente"
+                          ? `
+                        <button class="btn btn-sm btn-success approve-vehicle-btn" data-vehicle-id="${vehicle.id}">
+                          Aprovar
+                        </button>
+                        <button class="btn btn-sm btn-danger reject-vehicle-btn" data-vehicle-id="${vehicle.id}">
+                          Reprovar
+                        </button>
+                      `
+                          : ""
+                      }
+                      <button class="btn btn-sm btn-warning change-status-vehicle-btn" data-vehicle-id="${
+                        vehicle.id
+                      }">
+                        ${vehicle.status === "Aprovado" ? "Inativar" : "Ativar"}
+                      </button>
+                    </td>
+                  </tr>
+                `
+                  )
+                  .join("")}
+              </tbody>
+            </table>
+          </div>
+        `);
+
+          viewVehiclesModal.show();
+        });
+
+        // Ações em veículos
+        $(document).on(
+          "click",
+          ".approve-vehicle-btn, .reject-vehicle-btn, .change-status-vehicle-btn",
+          function () {
+            const vehicleId = $(this).data("vehicle-id");
+            currentVehicleId = vehicleId;
+
+            if ($(this).hasClass("approve-vehicle-btn")) {
+              $("#vehicleActionTitle").text("Aprovar Veículo");
+              currentAction = "approve";
+            } else if ($(this).hasClass("reject-vehicle-btn")) {
+              $("#vehicleActionTitle").text("Reprovar Veículo");
+              currentAction = "reject";
+            } else {
+              $("#vehicleActionTitle").text("Alterar Status do Veículo");
+              currentAction = "toggle-status";
+            }
+
+            vehicleActionModal.show();
+          }
+        );
+
+        // Confirmar ação no veículo
+        $("#confirmVehicleAction").click(function () {
+          const justification = $("#vehicleJustification").val();
+          if (!justification && currentAction !== "toggle-status") {
+            alert("Por favor, informe a justificativa");
+            return;
+          }
+
+          // Aqui você implementaria a lógica real para atualizar o veículo no localStorage
+          alert(
+            `Ação "${currentAction}" no veículo ${currentVehicleId} com justificativa: ${justification}`
+          );
+
+          // Limpar e fechar modal
+          $("#vehicleJustification").val("");
+          vehicleActionModal.hide();
+
+          // Recarregar dados
+          loadUsers();
+          loadVehicles();
+        });
+
+        // Buscar veículos
+        $("#searchVehiclesBtn").click(function () {
+          const searchParams = {
+            plate: $("#searchPlate").val(),
+            renavam: $("#searchRenavam").val(),
+            driver: $("#searchDriver").val(),
+            status: $("#searchStatus").val(),
+          };
+          loadVehicles(searchParams);
+        });
+      });
+    </script>
+  </body>
+</html>
